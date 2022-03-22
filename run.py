@@ -24,12 +24,12 @@ def scrape():
         input('[Required] - How many followers do you want to scrape (60-500 recommended): '))
         
     try:
-        file = open("C:/Users/pomer/Documents/Rush/instagram-follower-scraper/nameslists/{}.txt".format(usr), "x")
+        file = open("C:/Users/pomer/Documents/Rush/pipy-scraper/nameslists/{}.txt".format(usr), "x")
         file.close()
     except FileExistsError:
         resp = input('File appears to exist. Overwrite file "{}.txt"? enter y for yes. '.format(usr))
         if resp == 'y':
-            file = open("C:/Users/pomer/Documents/Rush/instagram-follower-scraper/nameslists/{}.txt".format(usr), "w")
+            file = open("C:/Users/pomer/Documents/Rush/pipy-scraper/nameslists/{}.txt".format(usr), "w")
             file.write('Followers:\n\n')
             file.close()
         else:
@@ -109,7 +109,7 @@ def scrape():
     #            continue
                 
             #name_element = bot.find_elements_by_class_name(
-    end = False
+    #end = False
     for hund in range(round(user_input // 100)):
             
         data = []
@@ -138,20 +138,23 @@ def scrape():
                     
                 except selenium.common.exceptions.NoSuchElementException:
                     print('Element unable to be found. Limit may have been reached.')
-                    end = True
-                    break
+                    #end = True
+                    #break
                 
-            if end:
-                break
+            #if end:
+            #    break
             
         
-        file = open("C:/Users/pomer/Documents/Rush/instagram-follower-scraper/nameslists/{}.txt".format(usr), "a")
+        file = open("C:/Users/pomer/Documents/Rush/pipy-scraper/nameslists/{}.txt".format(usr), "a")
         for point in data:
             try:
                 file.write(str(point).strip('{').strip('}') + '\n')
             except UnicodeEncodeError:
                 continue
         file.close()
+        
+        #if end:
+        #    break
         # Getting url from href attribute
         
                 
