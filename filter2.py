@@ -1,23 +1,18 @@
-import sys
+import sys, os
 
-def filter_names():
-    username = input('What is the username of the file that needs to be filtered? ')
-
-    input_file = open('C:/Users/pomer/Documents/Rush/instagram-follower-scraper/nameslists/{}.txt'.format(username), 'r')
-
-
+def filter_names(username, timestamp):
+    
     try:
-        output_file = open('C:/Users/pomer/Documents/Rush/instagram-follower-scraper/filtered/{}.txt'.format(username), 'x')
-        file.close()
+        os.mkdir("C:/Users/pomer/Documents/Rush/pipy-scraper/queues/{}/filtered".format(timestamp))
     except FileExistsError:
-        resp = input('File appears to exist. Overwrite file "{}.txt"? enter y for yes. '.format(username))
-        if resp == 'y':
-            output_file = open("C:/Users/pomer/Documents/Rush/instagram-follower-scraper/filtered/{}.txt".format(username), "w")
-            output_file.write('Filtered Followers:\n\n')
-        else:
-            print('Error')
-            return
-    print('Opened /nameslists/{}.txt'.format(username))
+        pass
+
+    input_file = open('C:/Users/pomer/Documents/Rush/pipy-scraper/queues/{}/nameslists/{}.txt'.format(timestamp, username), 'r')
+
+    output_file = open('C:/Users/pomer/Documents/Rush/pipy-scraper/queues/{}/filtered/{}.txt'.format(timestamp, username), "w")
+    output_file.write('Filtered Followers:\n\n')
+
+    print('Opened queues/{}/nameslists/{}.txt'.format(timestamp, username))
     keyword_file = open('keywords.txt', 'r')
     keywords = eval(keyword_file.read())
     keyword_file.close()

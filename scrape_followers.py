@@ -11,7 +11,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager as CM
-from filter import filter_names
+from filter2 import filter_names
 import time
 
 # Complete these 2 fields ==================
@@ -61,18 +61,31 @@ login_button.click()
 time.sleep(5)
     
 def main():
+    timestamp = time.strftime("%b%d-%Y_%H;%M")
+    
     file = open('account_list.txt')
     accounts = eval(file.readline())
     file.close()
     
     failed_accounts = []
+    
+    try:
+        os.mkdir("C:/Users/pomer/Documents/Rush/pipy-scraper/queues/{}".format(timestamp))
+        os.mkdir("C:/Users/pomer/Documents/Rush/pipy-scraper/queues/{}/nameslists".format(timestamp))
+    except FileExistsError:
+        pass
     while accounts:
         usr = accounts.pop(0)
-        file = open("C:/Users/pomer/Documents/Rush/instagram-follower-scraper/nameslists/{}.txt".format(usr), "w")
+        
+        file = open("C:/Users/pomer/Documents/Rush/pipy-scraper/queues/{}/nameslists/{}.txt".format(timestamp, usr), "x")
+        file.close()
+        
+        file = open("C:/Users/pomer/Documents/Rush/pipy-scraper/queues/{}/nameslists/{}.txt".format(timestamp, usr), "w")
         file.write('Followers:\n\n')
         file.close()
         try:
-            scrape(usr)
+            scrape(usr, timestamp)
+            filter_names(usr, timestamp)
         except selenium.common.exceptions.TimeoutException:
             failed_accounts.append(account)
             pass
@@ -83,8 +96,9 @@ def main():
         print('{} placed back into queue.'.format(account))
     file.close()
     bot.close()
+    print('Finished. {} accounts added back into the queue.'.format(len(failed_accounts)))
 
-def scrape(usr):  
+def scrape(usr, timestamp):  
     
     bot.get('https://www.instagram.com/{}/'.format(usr))
 
@@ -136,7 +150,7 @@ def scrape(usr):
                 break
                 
             
-        file = open("C:/Users/pomer/Documents/Rush/pipy-scraper/nameslists/{}.txt".format(usr), "a")
+        file = open("C:/Users/pomer/Documents/Rush/pipy-scraper/queues/{}/nameslists/{}.txt".format(timestamp, usr), "a")
         for point in data:
             try:
                 file.write(str(point).strip('{').strip('}') + '\n')
