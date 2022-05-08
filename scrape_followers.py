@@ -16,7 +16,9 @@ import time
 
 # Complete these 2 fields ==================
 USERNAME = 'jtate69420'
-PASSWORD = 'imissari123'
+PASSWORD = 'imissari12345'
+USERNAME = 'jpomerantz622'
+PASSWORD = 'taterisgod622'
 # ==========================================
 
 TIMEOUT = 15
@@ -108,7 +110,7 @@ def scrape(usr, timestamp):
         EC.presence_of_element_located((
             By.XPATH, '//*[@id="react-root"]/section/main/div/ul/li[2]/a'))).click()
 
-    time.sleep(2)
+    time.sleep(5)
 
     print('Scraping {}'.format(usr))
     users = set()
@@ -129,22 +131,25 @@ def scrape(usr, timestamp):
             for i in range(1, 11):
                 counter += 1
                 try:
-                    print(bot.find_element_by_xpath("/html/body/div[1]/section/main/div/ul/div/li[{}]/div/div[1]/div[2]/div[2]".format(counter)).text)
-                    name = bot.find_element_by_xpath("/html/body/div[1]/section/main/div/ul/div/li[{}]/div/div[1]/div[2]/div[2]".format(counter)).text
-                        
                     print(bot.find_element_by_xpath("/html/body/div[1]/section/main/div/ul/div/li[{}]/div/div[1]/div[2]/div[1]/a/span".format(counter)).text)
                     username = bot.find_element_by_xpath("/html/body/div[1]/section/main/div/ul/div/li[{}]/div/div[1]/div[2]/div[1]/a/span".format(counter)).text
-                        
-                    data.append('{}: {}'.format(name, username))
                     
-                # in case of emoji hoes
-                except UnicodeEncodeError:
-                    continue
-                        
                 except selenium.common.exceptions.NoSuchElementException:
                     print('Element unable to be found. Limit may have been reached.')
                     end = True
                     break
+                    
+                try:    
+                    print(bot.find_element_by_xpath("/html/body/div[1]/section/main/div/ul/div/li[{}]/div/div[1]/div[2]/div[2]".format(counter)).text)
+                    name = bot.find_element_by_xpath("/html/body/div[1]/section/main/div/ul/div/li[{}]/div/div[1]/div[2]/div[2]".format(counter)).text
+                        
+                # in case of emoji hoes
+                except UnicodeEncodeError:
+                    name = ''
+                    continue    
+                        
+                data.append('{}, {}'.format(name, username))
+                    
                     
             if end:
                 break
